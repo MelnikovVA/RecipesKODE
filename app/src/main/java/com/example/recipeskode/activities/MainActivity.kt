@@ -1,7 +1,8 @@
-package com.example.recipeskode
+package com.example.recipeskode.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.recipeskode.R
 
 class MainActivity : AppCompatActivity() {
 
