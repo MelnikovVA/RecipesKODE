@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.recipe_item_list.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RecipeAdapter(val context: Context, val recipes: List<Recipe>) :
+class RecipeAdapter(val context: Context, var recipes: List<Recipe>) :
     RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -38,6 +38,11 @@ class RecipeAdapter(val context: Context, val recipes: List<Recipe>) :
         Picasso.get().load(recipe.images[0]).into(recipePreviewImage)
 
 
+    }
+
+    fun sortItems(sortedRecipes: List<Recipe>)
+    {
+        recipes = sortedRecipes
     }
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
