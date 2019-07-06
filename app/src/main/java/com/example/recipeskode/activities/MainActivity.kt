@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     var storedRecipes: List<Recipe>? = null
     var rv: RecipeAdapter? = null
+    var currentSearchOption: String = "name"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +39,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupSearching() {
+        val searchOptions = arrayOf("Search by:", "Name", "Description", "Instructions")
+        spinnerSearchItemsOptions.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            searchOptions
+        )
+
+        spinnerSearchItemsOptions.setSelection(0)
+        spinnerSearchItemsOptions.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                when (position) {
+//CHANGE TO "UPDATE_SEARCH FUNCTION THAT WOULD TAKE currentSearchOption VALUE AND REFRESH THE LIST ACCORDING TO THE CURRENT TEXT TYPED
+                    1 -> currentSearchOption = "name"
+                    2 -> currentSearchOption = "description"
+                    3 -> currentSearchOption = "instructions"
+                    else -> null
+                }
+                recyclerView_main.adapter?.notifyDataSetChanged()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+
+        }
+
         editTextSearchItems.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                filterItems(p0.toString())
+                filterItems(p0.toString(), currentSearchOption)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -52,13 +79,26 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    fun filterItems(text : String){
+    fun filterItems(text: String, searchBy: String) {
         var filteredItems: MutableList<Recipe> = mutableListOf<Recipe>()
 
         storedRecipes?.let {
             for (recipe in it) {
-                if(recipe.name.toLowerCase().contains(text.toLowerCase())){
-                    filteredItems.add(recipe)
+                when (searchBy) {
+                    "name" ->
+                        if (recipe.name.toLowerCase().contains(text.toLowerCase())) {
+                            filteredItems.add(recipe)
+                        }
+                    "description" ->
+                        recipe.description?.let {
+                            if (recipe.description?.toLowerCase()!!.contains(text.toLowerCase())) {
+                                filteredItems.add(recipe)
+                            }
+                        }
+                    "instructions" ->
+                        if (recipe.instructions.toLowerCase().contains(text.toLowerCase())) {
+                            filteredItems.add(recipe)
+                        }
                 }
             }
         }
