@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupSorting() {
-        val sortingOptions = arrayOf("Name", "Last Updated")
+        val sortingOptions = arrayOf("Sort by:", "Name", "Last Updated")
         spinnerSort.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
         spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 when (position) {
-                    0 -> sortByName()
-                    1 -> sortByDate()
+                    1 -> sortByName()
+                    2 -> sortByDate()
                     else -> null
                 }
                 recyclerView_main.adapter?.notifyDataSetChanged()
@@ -93,14 +93,12 @@ class MainActivity : AppCompatActivity() {
         }
         //rv?.recipes  = storedRecipes!!.sortedBy { it.name }
         //rv?.recipes = storedRecipes!!
-        recyclerView_main.adapter?.notifyDataSetChanged()
     }
 
     private fun sortByDate() {
         storedRecipes?.let{
-            rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
+            //rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
             rv?.recipes = it.sortedByDescending { it.lastUpdated }
         }
-        recyclerView_main.adapter?.notifyDataSetChanged()
     }
 }
