@@ -3,12 +3,14 @@ package com.example.recipeskode.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeskode.R
 import com.example.recipeskode.adapters.RecipeAdapter
 import com.example.recipeskode.models.Recipe
 import com.example.recipeskode.models.RecipeList
 import com.example.recipeskode.network.GetRecipeService
 import com.example.recipeskode.network.RetrofitClientInstance
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        recyclerView_main.layoutManager = LinearLayoutManager(this)
         fetchJSON()
     }
 
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 val recipes = body?.recipes
 
                 runOnUiThread {
+                    recyclerView_main.adapter = RecipeAdapter(applicationContext, recipes!!)
                     //recyclerView_main.adapter = RecipeAdapter(recipes)
                 }
             }

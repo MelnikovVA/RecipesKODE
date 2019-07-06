@@ -17,12 +17,21 @@ class RecipeAdapter(val context: Context, val recipes: List<Recipe>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.recipe_item_list, parent, false)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.recipe_item_list, parent, false)
         return RecipeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
+        holder?.itemView?.textCardName?.text = recipe.name
+        holder?.itemView?.textCardDescription?.text = recipe.description
+
+        val sdf = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val date = java.util.Date(recipe.lastUpdated.toLong() * 1000)
+        holder?.itemView?.textCardLastUpdated.text = sdf.format(date)
+
+
     }
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
