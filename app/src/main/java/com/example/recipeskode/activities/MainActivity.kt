@@ -2,6 +2,9 @@ package com.example.recipeskode.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recipeskode.R
@@ -17,6 +20,8 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    var storedRecipes : List<Recipe>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,6 +29,24 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView_main.layoutManager = LinearLayoutManager(this)
         fetchJSON()
+
+        val sortingOptions = arrayOf("Name", "Last Updated")
+        spinnerSort.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            sortingOptions
+        )
+
+        spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+
+        }
     }
 
     fun fetchJSON() {
@@ -37,7 +60,8 @@ class MainActivity : AppCompatActivity() {
                 val recipes = body?.recipes
 
                 runOnUiThread {
-                    recyclerView_main.adapter = RecipeAdapter(applicationContext, recipes!!)
+                    storedRecipes = recipes
+                    recyclerView_main.adapter = RecipeAdapter(applicationContext, storedRecipes!!)
                     //recyclerView_main.adapter = RecipeAdapter(recipes)
                 }
             }
