@@ -2,4 +2,9 @@
     <string name="app_name">RecipesKODE</string>
     <string name="search_placeholder">Search...</string>
     <string name="description_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet volutpat consequat mauris nunc congue nisi vitae suscipit tellus.</string>
+    <string name="spinner_sort_placeholder">Sort by:</string>
+    <string-array name="spinner_sort_values">
+        <item>Name</item>
+        <item>Last Updated</item>
+    </string-array>
 </resources>
