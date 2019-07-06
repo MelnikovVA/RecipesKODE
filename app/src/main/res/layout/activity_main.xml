@@ -11,22 +11,23 @@
             android:hint="@string/search_placeholder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextSearchItem" app:layout_constraintStart_toStartOf="parent"
+            android:maxLines="1"
+            android:id="@+id/editTextSearchItems" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="24dp"
     />
     <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerSearch" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSearchItem"
-            app:layout_constraintStart_toStartOf="@+id/editTextSearchItem"
+            android:id="@+id/spinnerSearchItemsOptions" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextSearchItems"
+            app:layout_constraintStart_toStartOf="@+id/editTextSearchItems"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"/>
     <Spinner
             android:layout_width="0dp"
             android:layout_height="24dp"
-            android:id="@+id/spinnerSort"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/editTextSearchItem"
+            android:id="@+id/spinnerSortItemsOptions"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/editTextSearchItems"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"/>
     <androidx.constraintlayout.widget.Guideline
@@ -38,6 +39,6 @@
             android:layout_height="0dp"
             android:id="@+id/recyclerView_main" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/spinnerSort"
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/spinnerSortItemsOptions"
             app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
