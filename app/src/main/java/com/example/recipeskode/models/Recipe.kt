@@ -1,5 +1,9 @@
 package com.example.recipeskode.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Recipe(
     val uuid: String,
     val name: String,
@@ -8,4 +12,4 @@ data class Recipe(
     val description: String? = null,
     val instructions: String,
     val difficulty: Int
-)
+) : Parcelable
