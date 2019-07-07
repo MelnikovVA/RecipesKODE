@@ -26,7 +26,7 @@ class DetailsActivity : AppCompatActivity() {
         setupViewPagerIndicator()
     }
 
-    private fun renderData(){
+    private fun renderData() {
         textViewName.text = clickedRecipe.name
         ratingBar2.rating = clickedRecipe.difficulty.toFloat()
         webViewDescriptionText.loadData(clickedRecipe.instructions, "text/html; charset=utf-8", "UTF-8")
@@ -36,14 +36,13 @@ class DetailsActivity : AppCompatActivity() {
         viewPagerImageScroll.adapter = adapter
     }
 
-    private fun setupViewPagerIndicator(){
+    private fun setupViewPagerIndicator() {
         val imagesCount = clickedRecipe.images.size
         val dotsCount = minOf(imagesCount, 6)
         val viewPagerDots = mutableListOf<ImageView>()
 
-        if (imagesCount != 1) { //If there is only one image, we don't need the indicator at all
+        if (imagesCount != 1) { // If there is only one image, we don't need the indicator at all
             for (i in 0 until dotsCount) {
-
                 viewPagerDots.add(ImageView(this))
                 viewPagerDots[i].setImageDrawable(
                     ContextCompat.getDrawable(
@@ -55,7 +54,6 @@ class DetailsActivity : AppCompatActivity() {
             }
 
             viewPagerDots[0].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.dot_view_pager_active))
-
             viewPagerImageScroll.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
@@ -71,6 +69,7 @@ class DetailsActivity : AppCompatActivity() {
                         )
                     }
                     when {
+                        // In case there are more than 6 images, the active dot will only be changed after a certain number of images has been scrolled
                         imagesCount <= 6 -> {
                             viewPagerDots[position].setImageDrawable(
                                 ContextCompat.getDrawable(
@@ -80,15 +79,14 @@ class DetailsActivity : AppCompatActivity() {
                             )
                         }
                         else -> {
-                            if (position == imagesCount - 1){
+                            if (position == imagesCount - 1) {
                                 viewPagerDots[dotsCount - 1].setImageDrawable(
                                     ContextCompat.getDrawable(
                                         applicationContext,
                                         R.drawable.dot_view_pager_active
                                     )
                                 )
-                            }
-                            else {
+                            } else {
                                 viewPagerDots[position / ((imagesCount / dotsCount) + 2)].setImageDrawable(
                                     ContextCompat.getDrawable(
                                         applicationContext,
@@ -97,14 +95,10 @@ class DetailsActivity : AppCompatActivity() {
                                 )
                             }
                         }
-
-                        //In case there are more than 6 images, the active dot will only be changed after a certain number of images has been scrolled
-
                     }
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
-
                 }
             })
         }

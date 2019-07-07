@@ -29,12 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fetchJSON()
+        populateData()
         setupSearching()
         setupSorting()
     }
 
-    private fun fetchJSON() {
+    private fun populateData() {
         val service = RetrofitClientInstance.retrofitInstance?.create(GetRecipeService::class.java)
         val call = service?.getRecipes()
         call?.enqueue(object : Callback<RecipeList> {
@@ -65,17 +65,18 @@ class MainActivity : AppCompatActivity() {
             searchOptions
         )
 
+        //Filter by name by default
         spinnerSearchItemsOptions.setSelection(0)
         spinnerSearchItemsOptions.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position) {
-//CHANGE TO "UPDATE_SEARCH FUNCTION THAT WOULD TAKE currentSearchOption VALUE AND REFRESH THE LIST ACCORDING TO THE CURRENT TEXT TYPED
                     1 -> currentSearchOption = "name"
                     2 -> currentSearchOption = "description"
                     3 -> currentSearchOption = "instructions"
                     else -> null
                 }
-                recyclerView_main.adapter?.notifyDataSetChanged()
+                // Changing the filtering option should result in a new displayed list
+                filterItems(editTextSearchItems.text.toString(), currentSearchOption)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -85,6 +86,8 @@ class MainActivity : AppCompatActivity() {
         editTextSearchItems.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 filterItems(p0.toString(), currentSearchOption)
+                // When erasing the text (thus getting more items satisfying the condition), sorting should still work
+                sortItems(spinnerSortItemsOptions.selectedItemPosition)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -115,22 +118,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sortItems(spinnerPosition: Int) {
-        when (spinnerPosition) {
-            1 -> {
-                rv?.recipes?.let {
-                    //storedRecipes = it.sortedBy { it.name }
-                    rv?.recipes = rv?.recipes!!.sortedBy { it.name }
-                    //rv?.recipes = storedRecipes!!
-                }
+        rv?.recipes?.let {
+            when (spinnerPosition){
+                1 -> rv?.recipes = rv?.recipes!!.sortedBy { it.name }
+                2 -> rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
+                else -> null
             }
-            2 -> {
-                rv?.recipes?.let {
-                    //storedRecipes = it.sortedByDescending { it.lastUpdated }
-                    rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
-                    //rv?.recipes = storedRecipes!!
-                }
-            }
-            else -> null
         }
     }
 
@@ -146,7 +139,9 @@ class MainActivity : AppCompatActivity() {
                         }
                     "description" ->
                         recipe.description?.let {
-                            if (recipe.description?.toLowerCase()!!.contains(text.toLowerCase())) {
+                            if (recipe.description?.toLowerCase()!!.contains(text.toLowerCase()) ||
+                                text == ""
+                            ) {
                                 filteredItems.add(recipe)
                             }
                         }
@@ -160,5 +155,4 @@ class MainActivity : AppCompatActivity() {
         rv?.recipes = filteredItems
         recyclerView_main.adapter?.notifyDataSetChanged()
     }
-
 }
