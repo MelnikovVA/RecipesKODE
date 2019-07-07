@@ -14,32 +14,32 @@ import com.example.recipeskode.models.Recipe
 import kotlinx.android.synthetic.main.recipe_details.*
 
 class DetailsActivity : AppCompatActivity() {
+    private lateinit var clickedRecipe: Recipe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recipe_details)
 
         val i: Intent = intent
-        val clickedRecipe: Recipe = i.getParcelableExtra("clickedRecipe")
+        clickedRecipe = i.getParcelableExtra("clickedRecipe")
 
+        renderData()
+        setupViewPagerIndicator()
+    }
+
+    private fun renderData(){
         textViewName.text = clickedRecipe.name
-        //textViewDescriptionText.text =  clickedRecipe.description
-        textViewDifficulty.text = "Difficulty: "
-        //textViewInstructionsText.text =  clickedRecipe.instructions
-
-        webViewInstructionsText.loadData(clickedRecipe.description, "text/html; charset=utf-8", "UTF-8")
+        ratingBar2.rating = clickedRecipe.difficulty.toFloat()
         webViewDescriptionText.loadData(clickedRecipe.instructions, "text/html; charset=utf-8", "UTF-8")
+        webViewInstructionsText.loadData(clickedRecipe.description, "text/html; charset=utf-8", "UTF-8")
 
         var adapter = ViewPagerAdapter(this, clickedRecipe.images)
         viewPagerImageScroll.adapter = adapter
+    }
 
-        var imagesCount = clickedRecipe.images.size
-        var dotsCount = minOf(imagesCount, 6)
+    private fun setupViewPagerIndicator(){
+        val imagesCount = clickedRecipe.images.size
+        val dotsCount = minOf(imagesCount, 6)
         val viewPagerDots = mutableListOf<ImageView>()
-
-        ratingBar2.rating = clickedRecipe.difficulty.toFloat()
-//        for (i in 0 until clickedRecipe.difficulty) {
-//            ratingBar2.rating
-//        }
 
         if (imagesCount != 1) { //If there is only one image, we don't need the indicator at all
             for (i in 0 until dotsCount) {

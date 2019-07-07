@@ -29,21 +29,15 @@ class RecipeAdapter(val context: Context, var recipes: List<Recipe>) :
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = recipes[position]
-        holder?.itemView?.textCardName?.text = recipe.name
-        holder?.itemView?.textCardDescription?.text = recipe.description
-
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val date = Date(recipe.lastUpdated.toLong() * 1000)
-        holder?.itemView?.textCardLastUpdated.text = "Last Updated: ${sdf.format(date)}"
 
         val recipePreviewImage = holder?.itemView?.imageRecipe
         Picasso.get().load(recipe.images[0]).into(recipePreviewImage)
 
-
-    }
-
-    fun sortItems(sortedRecipes: List<Recipe>) {
-        recipes = sortedRecipes
+        val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+        val date = Date(recipe.lastUpdated.toLong() * 1000)
+        holder?.itemView?.textCardLastUpdated.text = "Last Updated: ${sdf.format(date)}"
+        holder?.itemView?.textCardName?.text = recipe.name
+        holder?.itemView?.textCardDescription?.text = recipe.description
     }
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
