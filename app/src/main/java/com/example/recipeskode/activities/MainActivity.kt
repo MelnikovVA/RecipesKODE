@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         spinnerSearchItemsOptions.setSelection(0)
         spinnerSearchItemsOptions.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position) {
 //CHANGE TO "UPDATE_SEARCH FUNCTION THAT WOULD TAKE currentSearchOption VALUE AND REFRESH THE LIST ACCORDING TO THE CURRENT TEXT TYPED
                     1 -> currentSearchOption = "name"
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         spinnerSortItemsOptions.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (position) {
                     1 -> sortByName()
                     2 -> sortByDate()
