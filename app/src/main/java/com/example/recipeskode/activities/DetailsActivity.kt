@@ -12,6 +12,9 @@ import com.example.recipeskode.R
 import com.example.recipeskode.adapters.ViewPagerAdapter
 import com.example.recipeskode.models.Recipe
 import kotlinx.android.synthetic.main.recipe_details.*
+import kotlinx.android.synthetic.main.recipe_item_list.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var clickedRecipe: Recipe
@@ -31,6 +34,10 @@ class DetailsActivity : AppCompatActivity() {
         ratingBar2.rating = clickedRecipe.difficulty.toFloat()
         webViewDescriptionText.loadData(clickedRecipe.instructions, "text/html; charset=utf-8", "UTF-8")
         webViewInstructionsText.loadData(clickedRecipe.description, "text/html; charset=utf-8", "UTF-8")
+
+        val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+        val date = Date(clickedRecipe.lastUpdated.toLong() * 1000)
+        textViewLastUpdated.text = "Last Updated: ${sdf.format(date)}"
 
         var adapter = ViewPagerAdapter(this, clickedRecipe.images)
         viewPagerImageScroll.adapter = adapter

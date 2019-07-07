@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 // Changing the filtering option should result in a new displayed list
                 filterItems(editTextSearchItems.text.toString(), currentSearchOption)
+                // Changing the filtering option should not affect sorting
+                sortItems(spinnerSortItemsOptions.selectedItemPosition)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -109,7 +111,6 @@ class MainActivity : AppCompatActivity() {
         spinnerSortItemsOptions.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 sortItems(position)
-                recyclerView_main.adapter?.notifyDataSetChanged()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -119,11 +120,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun sortItems(spinnerPosition: Int) {
         rv?.recipes?.let {
-            when (spinnerPosition){
+            when (spinnerPosition) {
                 1 -> rv?.recipes = rv?.recipes!!.sortedBy { it.name }
                 2 -> rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
                 else -> null
             }
+            recyclerView_main.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -138,11 +140,13 @@ class MainActivity : AppCompatActivity() {
                             filteredItems.add(recipe)
                         }
                     "description" ->
-                        recipe.description?.let {
-                            if (recipe.description?.toLowerCase()!!.contains(text.toLowerCase()) ||
-                                text == ""
-                            ) {
-                                filteredItems.add(recipe)
+                        if (text == "") {
+                            filteredItems.add(recipe)
+                        } else {
+                            recipe.description?.let {
+                                if (recipe.description?.toLowerCase()!!.contains(text.toLowerCase())) {
+                                    filteredItems.add(recipe)
+                                }
                             }
                         }
                     "instructions" ->
