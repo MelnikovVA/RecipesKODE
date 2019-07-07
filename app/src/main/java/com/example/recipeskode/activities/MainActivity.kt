@@ -158,19 +158,20 @@ class MainActivity : AppCompatActivity() {
     private fun sortByName() {
         //storedRecipes = storedRecipes?.sortedBy { it.name }
         //if (storedRecipes)
-        storedRecipes?.let {
-            storedRecipes = it.sortedBy { it.name }
-            rv?.recipes = storedRecipes!!
+        rv?.recipes?.let {
+            //storedRecipes = it.sortedBy { it.name }
+            rv?.recipes  = rv?.recipes!!.sortedBy { it.name }
+            //rv?.recipes = storedRecipes!!
         }
         //rv?.recipes  = storedRecipes!!.sortedBy { it.name }
         //rv?.recipes = storedRecipes!!
     }
 
     private fun sortByDate() {
-        storedRecipes?.let {
-            storedRecipes = it.sortedByDescending { it.lastUpdated }
-            //rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
-            rv?.recipes = storedRecipes!!
+        rv?.recipes?.let {
+            //storedRecipes = it.sortedByDescending { it.lastUpdated }
+            rv?.recipes = rv?.recipes!!.sortedByDescending { it.lastUpdated }
+            //rv?.recipes = storedRecipes!!
         }
     }
 }

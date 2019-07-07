@@ -23,7 +23,7 @@ class DetailsActivity : AppCompatActivity() {
 
         textViewName.text = clickedRecipe.name
         //textViewDescriptionText.text =  clickedRecipe.description
-        textViewDifficulty.text = "Difficulty: ${clickedRecipe.difficulty.toString()}"
+        textViewDifficulty.text = "Difficulty: "
         //textViewInstructionsText.text =  clickedRecipe.instructions
 
         webViewInstructionsText.loadData(clickedRecipe.description, "text/html; charset=utf-8", "UTF-8")
@@ -35,6 +35,11 @@ class DetailsActivity : AppCompatActivity() {
         var imagesCount = clickedRecipe.images.size
         var dotsCount = minOf(imagesCount, 6)
         val viewPagerDots = mutableListOf<ImageView>()
+
+        ratingBar2.rating = clickedRecipe.difficulty.toFloat()
+//        for (i in 0 until clickedRecipe.difficulty) {
+//            ratingBar2.rating
+//        }
 
         if (imagesCount != 1) { //If there is only one image, we don't need the indicator at all
             for (i in 0 until dotsCount) {
@@ -84,7 +89,6 @@ class DetailsActivity : AppCompatActivity() {
                                 )
                             }
                             else {
-                                //In case there are more than 6 images, the active dot will only be changed after a certain number of images has been scrolled
                                 viewPagerDots[position / ((imagesCount / dotsCount) + 2)].setImageDrawable(
                                     ContextCompat.getDrawable(
                                         applicationContext,
@@ -93,6 +97,9 @@ class DetailsActivity : AppCompatActivity() {
                                 )
                             }
                         }
+
+                        //In case there are more than 6 images, the active dot will only be changed after a certain number of images has been scrolled
+
                     }
                 }
 
